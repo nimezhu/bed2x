@@ -24,4 +24,5 @@ func TestUtr(t *testing.T) {
 	t.Log(bed2.CDS())
 	t.Log(bed2.UTR3())
 	t.Log(bed2.UTR5())
+	t.Log(Upstream(bed2, 1000))
 }
