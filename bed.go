@@ -154,17 +154,52 @@ func intArray(a []int) string {
 func (b *Bed12) String() string {
 	s := fmt.Sprintf("%s\t%d\t%d", b.chr, b.start, b.end)
 	s += fmt.Sprintf("\t%s\t%.1f\t%s", b.name, b.score, b.strand)
-	//TODO
 	s += fmt.Sprintf("\t%d\t%d\t%s", b.thickStart, b.thickEnd, b.itemRgb)
 	s += fmt.Sprintf("\t%d\t%s\t%s", b.blockCount, intArray(b.blockSizes), intArray(b.blockStarts))
 	return s
 }
 
-/*
+func (b *Bed6) String() string {
+	s := fmt.Sprintf("%s\t%d\t%d", b.chr, b.start, b.end)
+	s += fmt.Sprintf("\t%s\t%.1f\t%s", b.name, b.score, b.strand)
+	return s
+}
+
 func (b *Bed12) Exons() ([]*Bed6, error) {
-
+	e := make([]*Bed6, b.blockCount)
+	step := 1
+	j := 0
+	if b.strand == "-" {
+		step = -1
+		j = b.blockCount - 1
+	}
+	for i := 0; i < b.blockCount; i++ {
+		name := fmt.Sprintf("%s_Exon_%d", b.name, j+1)
+		e[j] = &Bed6{b.chr, b.start + b.blockStarts[i], b.start + b.blockStarts[i] + b.blockSizes[i], name, float64(0.0), b.strand}
+		j += step
+	}
+	return e, nil
 }
+
+func (b *Bed6) Exons() ([]*Bed6, error) {
+	e := make([]*Bed6, 1)
+	name := fmt.Sprintf("%s_Exon_1", b.name)
+	e[0] = &Bed6{b.chr, b.start, b.end, name, float64(0.0), b.strand}
+	return e, nil
+}
+
 func (b *Bed12) Introns() ([]*Bed6, error) {
-
+	e := make([]*Bed6, b.blockCount-1)
+	step := 1
+	j := 0
+	if b.strand == "-" {
+		step = -1
+		j = b.blockCount - 2
+	}
+	for i := 0; i < b.blockCount-1; i++ {
+		name := fmt.Sprintf("%s_Intron_%d", b.name, j+1)
+		e[j] = &Bed6{b.chr, b.start + b.blockStarts[i] + b.blockSizes[i], b.start + b.blockStarts[i+1], name, float64(0.0), b.strand}
+		j += step
+	}
+	return e, nil
 }
-*/

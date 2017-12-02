@@ -12,6 +12,14 @@ func TestUtr(t *testing.T) {
 	t.Log(bed1.CDS())
 	t.Log(bed1.UTR3())
 	t.Log(bed1.UTR5())
+	e, _ := bed1.Exons()
+	for _, v := range e {
+		t.Log(v)
+	}
+	introns, _ := bed1.Introns()
+	for _, v := range introns {
+		t.Log(v)
+	}
 	t.Log(bed2)
 	t.Log(bed2.CDS())
 	t.Log(bed2.UTR3())
