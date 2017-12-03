@@ -100,6 +100,25 @@ func IterBed12(fn string) (<-chan *Bed12, error) {
 	}()
 	return ch, nil
 }
+func IterBed6(fn string) (<-chan *Bed6, error) {
+	lines, err := IterBedLines(fn)
+	if err != nil {
+		return nil, err
+	}
+	ch := make(chan *Bed6)
+	go func() {
+		for line := range lines {
+			b, err := ParseBed6(line)
+			if err == nil {
+				ch <- b
+			} else {
+				log.Println(err)
+			}
+		}
+		close(ch)
+	}()
+	return ch, nil
+}
 
 var errorFormat = errors.New("wrong bed format")
 

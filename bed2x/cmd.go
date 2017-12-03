@@ -55,6 +55,30 @@ func main() {
 			Usage:  "get intron",
 			Action: CmdIntron,
 		},
+		{
+			Name:   "upstream",
+			Usage:  "get upstream",
+			Action: CmdUpstream,
+			Flags: []cli.Flag{
+				cli.IntFlag{
+					Name:  "b,bp",
+					Usage: "basepair number",
+					Value: 1000,
+				},
+			},
+		},
+		{
+			Name:   "downstream",
+			Usage:  "get downstream",
+			Action: CmdDownstream,
+			Flags: []cli.Flag{
+				cli.IntFlag{
+					Name:  "b,bp",
+					Usage: "basepair number",
+					Value: 1000,
+				},
+			},
+		},
 	}
 	app.Run(os.Args)
 }
@@ -136,6 +160,32 @@ func CmdIntron(c *cli.Context) error {
 			for _, i := range u {
 				fmt.Println(i)
 			}
+		}
+	}
+	return nil
+}
+func CmdUpstream(c *cli.Context) error {
+	in, _ := dio(c)
+	ch, err := bed2x.IterBed6(in)
+	checkErr(err)
+	bp := c.Int("bp")
+	for b := range ch {
+		u, err := bed2x.Upstream(b, bp)
+		if err == nil {
+			fmt.Println(u)
+		}
+	}
+	return nil
+}
+func CmdDownstream(c *cli.Context) error {
+	in, _ := dio(c)
+	ch, err := bed2x.IterBed6(in)
+	checkErr(err)
+	bp := c.Int("bp")
+	for b := range ch {
+		u, err := bed2x.Downstream(b, bp)
+		if err == nil {
+			fmt.Println(u)
 		}
 	}
 	return nil

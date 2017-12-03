@@ -26,6 +26,26 @@ type Bed6 struct {
 	score  float64
 	strand string
 }
+
+func (b *Bed6) Chr() string {
+	return b.chr
+}
+func (b *Bed6) Start() int {
+	return b.start
+}
+func (b *Bed6) End() int {
+	return b.end
+}
+func (b *Bed6) Name() string {
+	return b.name
+}
+func (b *Bed6) Score() float64 {
+	return b.score
+}
+func (b *Bed6) Strand() string {
+	return b.strand
+}
+
 type Bed12 struct {
 	chr         string
 	start       int
