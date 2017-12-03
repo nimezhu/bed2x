@@ -79,6 +79,17 @@ func main() {
 				},
 			},
 		},
+		{
+			Name:   "seq",
+			Usage:  "get seq",
+			Action: CmdSeq,
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "g,genome",
+					Usage: "2bit file",
+				},
+			},
+		},
 	}
 	app.Run(os.Args)
 }

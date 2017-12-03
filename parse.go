@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -51,13 +52,17 @@ func fillLines(r io.Reader, ch chan string) error {
 /*IterBedLines: input format could be bigbed,gzip and ascii text file
  */
 func IterBedLines(fn string) (<-chan string, error) {
+	emptyLine, _ := regexp.Compile("^ *$")
+	markLine, _ := regexp.Compile("^ *#")
 	ch := make(chan string)
 	if fn == "STDIN" {
 		bits, _ := ioutil.ReadAll(os.Stdin)
 		lines := strings.Split(string(bits), "\n")
 		go func() {
 			for _, v := range lines {
-				ch <- v
+				if !emptyLine.MatchString(v) && !markLine.MatchString(v) {
+					ch <- v
+				}
 			}
 			close(ch)
 		}()

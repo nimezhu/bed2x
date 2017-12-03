@@ -79,6 +79,24 @@ func (b *Bed12) Score() float64 {
 func (b *Bed12) Strand() string {
 	return b.strand
 }
+func (b *Bed12) ItemRgb() string {
+	return b.itemRgb
+}
+func (b *Bed12) ThickStart() int {
+	return b.thickStart
+}
+func (b *Bed12) ThickEnd() int {
+	return b.thickEnd
+}
+func (b *Bed12) BlockCount() int {
+	return b.blockCount
+}
+func (b *Bed12) BlockSizes() []int {
+	return b.blockSizes
+}
+func (b *Bed12) BlockStarts() []int {
+	return b.blockStarts
+}
 func max(a int, b int) int {
 	if a > b {
 		return a
