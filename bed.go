@@ -14,7 +14,7 @@ type Bed3i interface {
 }
 type Bed6i interface {
 	Bed3i
-	Name() string
+	Id() string
 	Score() float64
 	Strand() string
 }
@@ -22,7 +22,7 @@ type Bed6 struct {
 	chr    string
 	start  int
 	end    int
-	name   string
+	id     string
 	score  float64
 	strand string
 }
@@ -36,8 +36,8 @@ func (b *Bed6) Start() int {
 func (b *Bed6) End() int {
 	return b.end
 }
-func (b *Bed6) Name() string {
-	return b.name
+func (b *Bed6) Id() string {
+	return b.id
 }
 func (b *Bed6) Score() float64 {
 	return b.score
@@ -50,7 +50,7 @@ type Bed12 struct {
 	chr         string
 	start       int
 	end         int
-	name        string
+	id          string
 	score       float64
 	strand      string
 	thickStart  int
@@ -70,8 +70,8 @@ func (b *Bed12) Start() int {
 func (b *Bed12) End() int {
 	return b.end
 }
-func (b *Bed12) Name() string {
-	return b.name
+func (b *Bed12) Id() string {
+	return b.id
 }
 func (b *Bed12) Score() float64 {
 	return b.score
@@ -118,7 +118,7 @@ func (b *Bed12) _sliceBed12(start int, end int, suffix string) (*Bed12, error) {
 		end = b.end
 	}
 	strand := b.strand
-	name := b.name + "_" + suffix
+	id := b.id + "_" + suffix
 	score := b.score
 	itemRgb := b.itemRgb
 	thickStart := max(start, b.thickStart)
@@ -159,7 +159,7 @@ func (b *Bed12) _sliceBed12(start int, end int, suffix string) (*Bed12, error) {
 	if blockCount == 0 {
 		return nil, errors.New("wrong slice")
 	}
-	return &Bed12{chr, start, end, name, score, strand, thickStart, thickEnd, itemRgb, blockCount, sliceBlockSizes, sliceBlockStarts}, nil
+	return &Bed12{chr, start, end, id, score, strand, thickStart, thickEnd, itemRgb, blockCount, sliceBlockSizes, sliceBlockStarts}, nil
 }
 func (b *Bed12) CDS() (*Bed12, error) {
 	return b._sliceBed12(b.thickStart, b.thickEnd, "cds")
@@ -191,7 +191,7 @@ func intArray(a []int) string {
 }
 func (b *Bed12) String() string {
 	s := fmt.Sprintf("%s\t%d\t%d", b.chr, b.start, b.end)
-	s += fmt.Sprintf("\t%s\t%.1f\t%s", b.name, b.score, b.strand)
+	s += fmt.Sprintf("\t%s\t%.1f\t%s", b.id, b.score, b.strand)
 	s += fmt.Sprintf("\t%d\t%d\t%s", b.thickStart, b.thickEnd, b.itemRgb)
 	s += fmt.Sprintf("\t%d\t%s\t%s", b.blockCount, intArray(b.blockSizes), intArray(b.blockStarts))
 	return s
@@ -199,7 +199,7 @@ func (b *Bed12) String() string {
 
 func (b *Bed6) String() string {
 	s := fmt.Sprintf("%s\t%d\t%d", b.chr, b.start, b.end)
-	s += fmt.Sprintf("\t%s\t%.1f\t%s", b.name, b.score, b.strand)
+	s += fmt.Sprintf("\t%s\t%.1f\t%s", b.id, b.score, b.strand)
 	return s
 }
 
@@ -212,8 +212,8 @@ func (b *Bed12) Exons() ([]*Bed6, error) {
 		j = b.blockCount - 1
 	}
 	for i := 0; i < b.blockCount; i++ {
-		name := fmt.Sprintf("%s_exon_%d", b.name, j+1)
-		e[j] = &Bed6{b.chr, b.start + b.blockStarts[i], b.start + b.blockStarts[i] + b.blockSizes[i], name, float64(0.0), b.strand}
+		id := fmt.Sprintf("%s_exon_%d", b.id, j+1)
+		e[j] = &Bed6{b.chr, b.start + b.blockStarts[i], b.start + b.blockStarts[i] + b.blockSizes[i], id, float64(0.0), b.strand}
 		j += step
 	}
 	return e, nil
@@ -221,8 +221,8 @@ func (b *Bed12) Exons() ([]*Bed6, error) {
 
 func (b *Bed6) Exons() ([]*Bed6, error) {
 	e := make([]*Bed6, 1)
-	name := fmt.Sprintf("%s_exon_1", b.name)
-	e[0] = &Bed6{b.chr, b.start, b.end, name, float64(0.0), b.strand}
+	id := fmt.Sprintf("%s_exon_1", b.id)
+	e[0] = &Bed6{b.chr, b.start, b.end, id, float64(0.0), b.strand}
 	return e, nil
 }
 
@@ -235,8 +235,8 @@ func (b *Bed12) Introns() ([]*Bed6, error) {
 		j = b.blockCount - 2
 	}
 	for i := 0; i < b.blockCount-1; i++ {
-		name := fmt.Sprintf("%s_intron_%d", b.name, j+1)
-		e[j] = &Bed6{b.chr, b.start + b.blockStarts[i] + b.blockSizes[i], b.start + b.blockStarts[i+1], name, float64(0.0), b.strand}
+		id := fmt.Sprintf("%s_intron_%d", b.id, j+1)
+		e[j] = &Bed6{b.chr, b.start + b.blockStarts[i] + b.blockSizes[i], b.start + b.blockStarts[i+1], id, float64(0.0), b.strand}
 		j += step
 	}
 	return e, nil
@@ -245,7 +245,7 @@ func (b *Bed12) Introns() ([]*Bed6, error) {
 func Upstream(b Bed6i, bp int) (*Bed6, error) {
 	var start int
 	var end int
-	id := fmt.Sprintf("%s_up%d", b.Name(), bp)
+	id := fmt.Sprintf("%s_up%d", b.Id(), bp)
 	if b.Strand() == "+" {
 		start = b.Start() - bp
 		end = b.Start()
@@ -255,7 +255,7 @@ func Upstream(b Bed6i, bp int) (*Bed6, error) {
 	}
 	if start < 0 {
 		start = 0
-		id = fmt.Sprintf("%s_up%d", b.Name(), b.Start())
+		id = fmt.Sprintf("%s_up%d", b.Id(), b.Start())
 	}
 	return &Bed6{b.Chr(), start, end, id, float64(0.0), b.Strand()}, nil
 
@@ -263,7 +263,7 @@ func Upstream(b Bed6i, bp int) (*Bed6, error) {
 func Downstream(b Bed6i, bp int) (*Bed6, error) {
 	var start int
 	var end int
-	id := fmt.Sprintf("%s_down%d", b.Name(), bp)
+	id := fmt.Sprintf("%s_down%d", b.Id(), bp)
 	if b.Strand() == "-" {
 		start = b.Start() - bp
 		end = b.Start()
@@ -273,7 +273,7 @@ func Downstream(b Bed6i, bp int) (*Bed6, error) {
 	}
 	if start < 0 {
 		start = 0
-		id = fmt.Sprintf("%s_down%d", b.Name(), b.Start())
+		id = fmt.Sprintf("%s_down%d", b.Id(), b.Start())
 	}
 	return &Bed6{b.Chr(), start, end, id, float64(0.0), b.Strand()}, nil
 
@@ -285,7 +285,7 @@ func Tss(b Bed6i) (*Bed6, error) {
 	} else {
 		pos = b.End() - 1
 	}
-	return &Bed6{b.Chr(), pos, pos + 1, b.Name() + "_tss", float64(0.0), b.Strand()}, nil
+	return &Bed6{b.Chr(), pos, pos + 1, b.Id() + "_tss", float64(0.0), b.Strand()}, nil
 }
 func Tts(b Bed6i) (*Bed6, error) {
 	var pos int
@@ -294,5 +294,5 @@ func Tts(b Bed6i) (*Bed6, error) {
 	} else {
 		pos = b.End() - 1
 	}
-	return &Bed6{b.Chr(), pos, pos + 1, b.Name() + "_tts", float64(0.0), b.Strand()}, nil
+	return &Bed6{b.Chr(), pos, pos + 1, b.Id() + "_tts", float64(0.0), b.Strand()}, nil
 }
