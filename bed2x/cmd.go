@@ -27,7 +27,7 @@ func main() {
 	app.Commands = []cli.Command{
 		{
 			Name:   "read",
-			Usage:  "read bigbed, gzip, tabix into bed",
+			Usage:  "get bed",
 			Action: CmdRead,
 		},
 		{
@@ -78,6 +78,33 @@ func main() {
 					Value: 1000,
 				},
 			},
+		},
+		{
+			Name:   "promoter",
+			Usage:  "get promoter",
+			Action: CmdPromoter,
+			Flags: []cli.Flag{
+				cli.IntFlag{
+					Name:  "up,u",
+					Usage: "basepair number",
+					Value: 1000,
+				},
+				cli.IntFlag{
+					Name:  "down,d",
+					Usage: "basepair number",
+					Value: 500,
+				},
+			},
+		},
+		{
+			Name:   "tss",
+			Usage:  "get tss",
+			Action: CmdTss,
+		},
+		{
+			Name:   "tts",
+			Usage:  "get tts",
+			Action: CmdTts,
 		},
 		{
 			Name:   "seq",
@@ -147,6 +174,31 @@ func CmdCDS(c *cli.Context) error {
 	}
 	return nil
 }
+func CmdTss(c *cli.Context) error {
+	in, _ := dio(c)
+	ch, err := bed2x.IterBed6(in)
+	checkErr(err)
+	for b := range ch {
+		u, err := bed2x.Tss(b)
+		if err == nil {
+			fmt.Println(u)
+		}
+	}
+	return nil
+}
+func CmdTts(c *cli.Context) error {
+	in, _ := dio(c)
+	ch, err := bed2x.IterBed6(in)
+	checkErr(err)
+	for b := range ch {
+		u, err := bed2x.Tts(b)
+		if err == nil {
+			fmt.Println(u)
+		}
+	}
+	return nil
+}
+
 func CmdExon(c *cli.Context) error {
 	in, _ := dio(c)
 	ch, err := bed2x.IterBed12(in)
@@ -195,6 +247,20 @@ func CmdDownstream(c *cli.Context) error {
 	bp := c.Int("bp")
 	for b := range ch {
 		u, err := bed2x.Downstream(b, bp)
+		if err == nil {
+			fmt.Println(u)
+		}
+	}
+	return nil
+}
+func CmdPromoter(c *cli.Context) error {
+	in, _ := dio(c)
+	ch, err := bed2x.IterBed6(in)
+	checkErr(err)
+	up := c.Int("up")
+	down := c.Int("down")
+	for b := range ch {
+		u, err := bed2x.Promoter(b, up, down)
 		if err == nil {
 			fmt.Println(u)
 		}

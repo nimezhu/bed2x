@@ -241,7 +241,25 @@ func (b *Bed12) Introns() ([]*Bed6, error) {
 	}
 	return e, nil
 }
-
+func Promoter(b Bed6i, up int, down int) (*Bed6, error) {
+	var start int
+	var end int
+	if b.Strand() == "+" {
+		start = b.Start() - up
+		end = b.Start() + down
+		if start < 0 {
+			up = b.Start()
+		}
+	} else {
+		start = b.End() - down
+		end = b.End() + up
+		if start < 0 {
+			down = b.Start()
+		}
+	}
+	id := fmt.Sprintf("%s_promoter_up%d_down%d", b.Id(), up, down)
+	return &Bed6{b.Chr(), start, end, id, float64(0.0), b.Strand()}, nil
+}
 func Upstream(b Bed6i, bp int) (*Bed6, error) {
 	var start int
 	var end int
