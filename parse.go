@@ -37,6 +37,8 @@ func fillLinesBigBed(r io.ReadSeeker, ch chan string) error {
 	return nil
 }
 func fillLines(r io.Reader, ch chan string) error {
+	emptyLine, _ := regexp.Compile("^ *$")
+	markLine, _ := regexp.Compile("^ *#")
 	c, err := ioutil.ReadAll(r)
 	if err != nil {
 		return err
@@ -44,7 +46,9 @@ func fillLines(r io.Reader, ch chan string) error {
 	lines := string(c)
 	l := strings.Split(lines, "\n")
 	for _, v := range l {
-		ch <- v
+		if !emptyLine.MatchString(v) && !markLine.MatchString(v) {
+			ch <- v
+		}
 	}
 	return nil
 }
