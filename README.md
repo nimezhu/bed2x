@@ -5,9 +5,9 @@
 - support stdin/stdout pipe
 ## Install
 ### Install from go
-'''
+```
 go get github.com/nimezhu/bed2x/...
-'''
+```
 ### Download Binaries
 [Download Link](http://genome.compbio.cs.cmu.edu/~xiaopenz/bed2x/current)
 
