@@ -1,4 +1,3 @@
-
 # bed2x
 [![Build Status](https://travis-ci.org/nimezhu/bed2x.svg?branch=master)](https://travis-ci.org/nimezhu/bed2x)
 [![Go Report Card](https://goreportcard.com/badge/github.com/nimezhu/bed2x)](https://goreportcard.com/report/github.com/nimezhu/bed2x)
