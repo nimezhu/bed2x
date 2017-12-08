@@ -1,3 +1,4 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/nimezhu/bed2x)](https://goreportcard.com/report/github.com/nimezhu/bed2x)
 # bed2x
 ## Functions
 - get upstream/downstream/intron/exon/promoter/tts/tss/utr3/utr5/cds annotation bed based on input bed12/bed6 bigbed/tabix/gzip/ascii files.
