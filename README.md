@@ -23,4 +23,5 @@ go get github.com/nimezhu/bed2x/...
 ```
 bed2x exon [file.bb or file.bed or file.bed.gz]  > file.exon.bed
 bed2x promoter file.bb | bed2x seq -g genome.2bit > file.promoter.fa
+bed2x read file.bb | head -10 | bed2 seq -g http://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/hg19.2bit
 ```

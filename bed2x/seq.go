@@ -38,7 +38,7 @@ func CmdSeq(c *cli.Context) error {
 			} else {
 				seq, err := tb.ReadRange(b.Chr(), b.Start(), b.End())
 				if err == nil {
-					fmt.Println(">%s", b.Id())
+					fmt.Printf(">%s\n", b.Id())
 					l := 0
 					for _, v := range b.BlockSizes() {
 						l += v
@@ -69,7 +69,7 @@ func CmdSeq(c *cli.Context) error {
 			} else {
 				seq, err := tb.ReadRange(b.Chr(), b.Start(), b.End())
 				if err == nil {
-					fmt.Println(">%s", b.Id())
+					fmt.Printf(">%s\n", b.Id())
 					if b.Strand() == "-" {
 						fmt.Println(bed2x.RC(string(seq)))
 					} else {
