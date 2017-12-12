@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"regexp"
 	"strings"
 
 	"github.com/aebruno/twobit"
@@ -18,6 +19,11 @@ func CmdSeq(c *cli.Context) error {
 	format := 12
 	signal := false
 	genomeUri := c.String("g")
+	if ok, _ := regexp.MatchString("\\.2bit$", genomeUri); !ok {
+		if len(genomeUri) < 20 {
+			genomeUri = fmt.Sprintf("http://hgdownload.soe.ucsc.edu/goldenPath/%s/bigZips/%s.2bit", genomeUri, genomeUri)
+		}
+	}
 	f, err := netio.Open(genomeUri)
 	checkErr(err)
 	tb, err := twobit.NewReader(f)
