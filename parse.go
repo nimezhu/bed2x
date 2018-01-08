@@ -116,8 +116,13 @@ func IterBed6(fn string) (<-chan *Bed6, error) {
 	}
 	ch := make(chan *Bed6)
 	go func() {
+		i := 0
 		for line := range lines {
+			i += 1
 			b, err := ParseBed6(line)
+			if b.Id() == "noname" {
+				b.id = "No." + strconv.Itoa(i)
+			}
 			if err == nil {
 				ch <- b
 			} else {
@@ -146,8 +151,8 @@ func parseInts(a string) ([]int, error) {
 }
 func ParseBed6(line string) (*Bed6, error) {
 	a := strings.Split(line, "\t")
-	if len(a) < 6 {
-		return nil, errors.New("less than 6 column")
+	if len(a) < 3 {
+		return nil, errors.New("less than 3 column")
 	}
 	chr := a[0]
 	start, err := strconv.Atoi(a[1])
@@ -158,10 +163,19 @@ func ParseBed6(line string) (*Bed6, error) {
 	if err != nil {
 		return nil, err
 	}
+	if len(a) == 3 {
+		return &Bed6{chr, start, end, "noname", 0.0, "."}, nil
+	}
 	name := a[3]
+	if len(a) == 4 {
+		return &Bed6{chr, start, end, name, 0.0, "."}, nil
+	}
 	score, err := strconv.ParseFloat(a[4], 64)
 	if err != nil {
 		return nil, err
+	}
+	if len(a) == 5 {
+		return &Bed6{chr, start, end, name, score, "."}, nil
 	}
 	strand := a[5]
 	return &Bed6{chr, start, end, name, score, strand}, nil
