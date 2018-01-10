@@ -17,6 +17,24 @@ import (
 	"github.com/nimezhu/netio"
 )
 
+var (
+	posPattern = regexp.MustCompile("^(\\S+):(\\d+)-(\\d+)\n*$")
+)
+
+func parsePos(s string) (Bed3i, bool) {
+	if !posPattern.MatchString(s) {
+		return nil, false
+	}
+	match := posPattern.FindStringSubmatch(s)
+	chr := match[1]
+	start, _ := strconv.Atoi(match[2])
+	end, _ := strconv.Atoi(match[3])
+	if start > end {
+		return nil, false
+	}
+	a := Bed6{chr, start - 1, end, "noname", 0.0, "."}
+	return &a, true
+}
 func checkErr(err error) {
 	if err != nil {
 		panic(err)
@@ -53,12 +71,24 @@ func fillLines(r io.Reader, ch chan string) error {
 	return nil
 }
 
-/*IterBedLines: input format could be bigbed,gzip and ascii text file
+/*IterBedLines: input format could be bigbed,gzip and ascii text file or \S+:\d+-\d+
  */
 func IterBedLines(fn string) (<-chan string, error) {
 	emptyLine, _ := regexp.Compile("^ *$")
 	markLine, _ := regexp.Compile("^ *#")
 	ch := make(chan string)
+	processed := false
+	if a, ok := parsePos(fn); ok {
+		if _, err := os.Stat(fn); err != nil {
+			s := fmt.Sprintf("%s\t%d\t%d", a.Chr(), a.Start(), a.End())
+			go func() {
+				ch <- s
+				close(ch)
+			}()
+			processed = true
+		}
+	}
+
 	if fn == "STDIN" {
 		bits, _ := ioutil.ReadAll(os.Stdin)
 		lines := strings.Split(string(bits), "\n")
@@ -70,7 +100,9 @@ func IterBedLines(fn string) (<-chan string, error) {
 			}
 			close(ch)
 		}()
-	} else {
+		processed = true
+	}
+	if !processed {
 		f, err := netio.Open(fn)
 		if err != nil {
 			return nil, err

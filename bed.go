@@ -264,12 +264,12 @@ func Upstream(b Bed6i, bp int) (*Bed6, error) {
 	var start int
 	var end int
 	id := fmt.Sprintf("%s_up%d", b.Id(), bp)
-	if b.Strand() == "+" {
-		start = b.Start() - bp
-		end = b.Start()
-	} else {
+	if b.Strand() == "-" {
 		start = b.End()
 		end = b.End() + bp
+	} else {
+		start = b.Start() - bp
+		end = b.Start()
 	}
 	if start < 0 {
 		start = 0
@@ -294,14 +294,13 @@ func Downstream(b Bed6i, bp int) (*Bed6, error) {
 		id = fmt.Sprintf("%s_down%d", b.Id(), b.Start())
 	}
 	return &Bed6{b.Chr(), start, end, id, float64(0.0), b.Strand()}, nil
-
 }
 func Tss(b Bed6i) (*Bed6, error) {
 	var pos int
-	if b.Strand() == "+" {
-		pos = b.Start()
-	} else {
+	if b.Strand() == "-" {
 		pos = b.End() - 1
+	} else {
+		pos = b.Start()
 	}
 	return &Bed6{b.Chr(), pos, pos + 1, b.Id() + "_tss", float64(0.0), b.Strand()}, nil
 }
