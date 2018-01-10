@@ -35,3 +35,13 @@ func TestDb(t *testing.T) {
 		t.Log(v)
 	}
 }
+
+func TestDb2(t *testing.T) {
+	db := NewDb()
+	db.Load("chr1:1-30000")
+	db.Load("chr1:200-30000")
+	iter, _ := db.Query("chr1", 1, 20001)
+	for v := range iter {
+		t.Log(v)
+	}
+}

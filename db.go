@@ -9,10 +9,11 @@ import (
 type Db struct {
 	data     map[string]Bed6i
 	binindex *data.BinIndexMap
+	alter    map[string][]Bed6i
 }
 
 func NewDb() Db {
-	return Db{make(map[string]Bed6i), data.NewBinIndexMap()}
+	return Db{make(map[string]Bed6i), data.NewBinIndexMap(), make(map[string][]Bed6i)}
 }
 
 func (db Db) Load(fn string) error {
@@ -21,12 +22,21 @@ func (db Db) Load(fn string) error {
 		return err
 	}
 	for b := range ch {
-		db.data[b.Id()] = b
-		//t, _ := Tss(b)
+		if _, ok := db.data[b.Id()]; !ok {
+			db.data[b.Id()] = b //TODO: Rename b.Id() if exists
+		} else {
+			//TODO
+			if _, ok := db.alter[b.Id()]; !ok {
+				db.alter[b.Id()] = make([]Bed6i, 0, 0)
+			}
+			db.alter[b.Id()] = append(db.alter[b.Id()], b)
+		}
 		db.binindex.Insert(b)
 	}
 	return nil
 }
+
+//* TODO Get All Bed6i with same Id */
 func (db Db) Get(id string) (Bed6i, error) {
 	if a, ok := db.data[id]; ok {
 		return a, nil
@@ -34,6 +44,7 @@ func (db Db) Get(id string) (Bed6i, error) {
 		return nil, errors.New("not found")
 	}
 }
+
 func (db Db) Query(chr string, start int, end int) (<-chan Bed6i, error) {
 	a, err := db.binindex.QueryRegion(chr, start, end)
 	if err != nil {
