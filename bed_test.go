@@ -26,3 +26,12 @@ func TestUtr(t *testing.T) {
 	t.Log(bed2.UTR5())
 	t.Log(Upstream(bed2, 1000))
 }
+
+func TestDb(t *testing.T) {
+	db := NewDb()
+	db.Load("test.bed")
+	iter, _ := db.Query("chr1", 1, 20001)
+	for v := range iter {
+		t.Log(v)
+	}
+}
