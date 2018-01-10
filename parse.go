@@ -214,44 +214,51 @@ func ParseBed6(line string) (*Bed6, error) {
 }
 func ParseBed12(line string) (*Bed12, error) {
 	a := strings.Split(line, "\t")
-	if len(a) < 12 {
-		return nil, errors.New("less than 12 column")
-	}
-	chr := a[0]
-	start, err := strconv.Atoi(a[1])
+	/*
+		if len(a) < 12 {
+			return nil, errors.New("less than 12 column")
+		}
+	*/
+	bed6, err := ParseBed6(line)
 	if err != nil {
 		return nil, err
 	}
-	end, err := strconv.Atoi(a[2])
-	if err != nil {
-		return nil, err
+	chr := bed6.Chr()
+	start := bed6.Start()
+	end := bed6.End()
+	name := bed6.Id()
+	score := bed6.Score()
+	strand := bed6.Strand()
+	if len(a) >= 12 {
+		thickStart, err := strconv.Atoi(a[6])
+		if err != nil {
+			return nil, err
+		}
+		thickEnd, err := strconv.Atoi(a[7])
+		if err != nil {
+			return nil, err
+		}
+		itemRgb := a[8]
+		blockCount, err := strconv.Atoi(a[9])
+		if err != nil {
+			return nil, err
+		}
+		blockSizes, err := parseInts(a[10])
+		if err != nil {
+			return nil, err
+		}
+		blockStarts, err := parseInts(a[11])
+		if err != nil {
+			return nil, err
+		}
+		return &Bed12{chr, start, end, name, score, strand, thickStart, thickEnd, itemRgb, blockCount, blockSizes, blockStarts}, nil
+	} else {
+		thickStart := start
+		thickEnd := start
+		itemRgb := "0"
+		blockCount := 1
+		blockSizes := []int{end - start}
+		blockStarts := []int{0}
+		return &Bed12{chr, start, end, name, score, strand, thickStart, thickEnd, itemRgb, blockCount, blockSizes, blockStarts}, nil
 	}
-	name := a[3]
-	score, err := strconv.ParseFloat(a[4], 64)
-	if err != nil {
-		return nil, err
-	}
-	strand := a[5]
-	thickStart, err := strconv.Atoi(a[6])
-	if err != nil {
-		return nil, err
-	}
-	thickEnd, err := strconv.Atoi(a[7])
-	if err != nil {
-		return nil, err
-	}
-	itemRgb := a[8]
-	blockCount, err := strconv.Atoi(a[9])
-	if err != nil {
-		return nil, err
-	}
-	blockSizes, err := parseInts(a[10])
-	if err != nil {
-		return nil, err
-	}
-	blockStarts, err := parseInts(a[11])
-	if err != nil {
-		return nil, err
-	}
-	return &Bed12{chr, start, end, name, score, strand, thickStart, thickEnd, itemRgb, blockCount, blockSizes, blockStarts}, nil
 }
