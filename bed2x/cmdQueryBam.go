@@ -26,7 +26,6 @@ func CmdQueryBam(c *cli.Context) error {
 
 	checkErr(err)
 	bai, err := bam.ReadIndex(baiReader)
-	fmt.Println(bai.NumRefs())
 	bamReader, err := netio.Open(bamUri)
 	checkErr(err)
 	bam1, err := bam.NewReader(bamReader, 0)
@@ -34,8 +33,7 @@ func CmdQueryBam(c *cli.Context) error {
 	header := bam1.Header()
 	refs := header.Refs()
 	refMap := make(map[string]*sam.Reference)
-	for i, v := range refs {
-		fmt.Println(i, v.AssemblyID(), v.Name(), v.Len())
+	for _, v := range refs {
 		refMap[v.Name()] = v
 	}
 
