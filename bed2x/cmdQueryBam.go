@@ -49,7 +49,8 @@ func CmdQueryBam(c *cli.Context) error {
 		for iter.Next() {
 			reads := iter.Record()
 			if overlap(reads, b) {
-				fmt.Printf("HT\t%s\n", reads)
+				bit, _ := reads.MarshalText()
+				fmt.Printf("HT\t%s\n", string(bit))
 			}
 		}
 	}
