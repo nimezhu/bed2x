@@ -45,10 +45,11 @@ func CmdQueryBam(c *cli.Context) error {
 		chunks, err := bai.Chunks(ref, b.Start(), b.End())
 		iter, err := bam.NewIterator(bam1, chunks)
 		checkErr(err)
+		fmt.Printf("QR\t%s\n", b)
 		for iter.Next() {
 			reads := iter.Record()
 			if overlap(reads, b) {
-				fmt.Println(reads)
+				fmt.Printf("HT\t%s\n", reads)
 			}
 		}
 	}
