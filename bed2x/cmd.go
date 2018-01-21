@@ -117,6 +117,17 @@ func main() {
 				},
 			},
 		},
+		{
+			Name:   "querybam",
+			Usage:  "query bam",
+			Action: CmdQueryBam,
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "i,bam",
+					Usage: "input bam",
+				},
+			},
+		},
 	}
 	app.Run(os.Args)
 }
