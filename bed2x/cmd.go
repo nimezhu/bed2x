@@ -128,6 +128,12 @@ func main() {
 				},
 			},
 		},
+		{
+			Name:   "chromsizes",
+			Usage:  "get chrom sizes",
+			Action: CmdChromSizes,
+			Flags:  []cli.Flag{},
+		},
 	}
 	app.Run(os.Args)
 }
@@ -286,4 +292,8 @@ func CmdRead(c *cli.Context) error {
 		fmt.Println(line)
 	}
 	return nil
+}
+func CmdChromSizes(c *cli.Context) {
+	v := c.Args().First()
+	bed2x.ChromSizes(v)
 }
