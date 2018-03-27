@@ -35,6 +35,9 @@ func parsePos(s string) (Bed3i, bool) {
 	a := Bed6{chr, start - 1, end, "noname", 0.0, "."}
 	return &a, true
 }
+func ParseRegion(s string) (Bed3i, bool) {
+	return parsePos(s)
+}
 func checkErr(err error) {
 	if err != nil {
 		panic(err)

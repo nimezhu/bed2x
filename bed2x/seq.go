@@ -74,6 +74,9 @@ func CmdSeq(c *cli.Context) error {
 				log.Println(err)
 			} else {
 				seq, err := tb.ReadRange(b.Chr(), b.Start(), b.End())
+				if err != nil {
+					log.Println("err", err)
+				}
 				if err == nil {
 					fmt.Printf(">%s\n", b.Id())
 					if b.Strand() == "-" {
