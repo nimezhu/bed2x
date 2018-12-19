@@ -25,10 +25,36 @@ func CigarToCoords(cigar sam.Cigar, offset int) ([]int, []int) {
 				iE += 1
 			} else {
 				exonStarts[iE] += cigarLen
-
 			}
 			state = 0
 		}
 	}
 	return exonStarts, exonLengths
+}
+func sign(i int8) string {
+	if i < 0 {
+		return "-"
+	}
+	if i > 0 {
+		return "+"
+	}
+	return "."
+}
+func SamRecordToBed12(s *sam.Record, chr string) *Bed12 {
+	start := s.Start()
+	exonStarts, exonLengths := CigarToCoords(s.Cigar, start)
+	return &Bed12{
+		chr,
+		start,
+		s.End(),
+		s.Name,
+		0,
+		sign(s.Strand()),
+		start,
+		s.End(),
+		"0",
+		len(exonStarts),
+		exonStarts,
+		exonLengths,
+	}
 }

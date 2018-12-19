@@ -97,6 +97,7 @@ func (b *Bed12) BlockSizes() []int {
 func (b *Bed12) BlockStarts() []int {
 	return b.blockStarts
 }
+
 func max(a int, b int) int {
 	if a > b {
 		return a

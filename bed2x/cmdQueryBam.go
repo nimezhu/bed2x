@@ -47,12 +47,13 @@ func CmdQueryBam(c *cli.Context) error {
 		checkErr(err)
 		fmt.Printf("QR\t%s\n", b)
 		for iter.Next() {
-			reads := iter.Record()
-			if overlap(reads, b) {
+			read := iter.Record()
+			if overlap(read, b) {
 				//es, el := bed2x.CigarToCoords(reads.Cigar, reads.Start())
 				//fmt.Println(es, el)
-				bit, _ := reads.MarshalText()
+				bit, _ := read.MarshalText()
 				fmt.Printf("HT\t%s\n", string(bit))
+				fmt.Println("BED\t", bed2x.SamRecordToBed12(read, b.Chr()).String())
 			}
 		}
 	}
