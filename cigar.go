@@ -40,11 +40,11 @@ func sign(i int8) string {
 	}
 	return "."
 }
-func SamRecordToBed12(s *sam.Record, chr string) *Bed12 {
+func SamRecordToBed12(s *sam.Record) *Bed12 {
 	start := s.Start()
 	exonStarts, exonLengths := CigarToCoords(s.Cigar, start)
 	return &Bed12{
-		chr,
+		s.Ref.Name(),
 		start,
 		s.End(),
 		s.Name,

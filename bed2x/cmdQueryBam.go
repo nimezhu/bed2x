@@ -53,7 +53,7 @@ func CmdQueryBam(c *cli.Context) error {
 				//fmt.Println(es, el)
 				bit, _ := read.MarshalText()
 				fmt.Printf("HT\t%s\n", string(bit))
-				fmt.Println("BED\t", bed2x.SamRecordToBed12(read, b.Chr()).String())
+				fmt.Println("BED\t", bed2x.SamRecordToBed12(read).String())
 			}
 		}
 	}
