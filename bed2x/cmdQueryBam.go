@@ -49,6 +49,8 @@ func CmdQueryBam(c *cli.Context) error {
 		for iter.Next() {
 			reads := iter.Record()
 			if overlap(reads, b) {
+				//es, el := bed2x.CigarToCoords(reads.Cigar, reads.Start())
+				//fmt.Println(es, el)
 				bit, _ := reads.MarshalText()
 				fmt.Printf("HT\t%s\n", string(bit))
 			}
