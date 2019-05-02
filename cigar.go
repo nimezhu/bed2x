@@ -40,7 +40,7 @@ func sign(i int8) string {
 	}
 	return "."
 }
-func SamRecordToBed12(s *sam.Record) *Bed12 {
+func SamRecordToBed12(s *sam.Record) *Bed12 { //Assign First Mate and Second Mate to Score??
 	start := s.Start()
 	exonStarts, exonLengths := CigarToCoords(s.Cigar, start)
 	return &Bed12{

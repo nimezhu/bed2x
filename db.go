@@ -2,18 +2,16 @@ package bed2x
 
 import (
 	"errors"
-
-	"github.com/nimezhu/data"
 )
 
 type Db struct {
 	data     map[string]Bed6i
-	binindex *data.BinIndexMap
+	binindex *BinIndexMap
 	alter    map[string][]Bed6i
 }
 
 func NewDb() Db {
-	return Db{make(map[string]Bed6i), data.NewBinIndexMap(), make(map[string][]Bed6i)}
+	return Db{make(map[string]Bed6i), NewBinIndexMap(), make(map[string][]Bed6i)}
 }
 
 func (db Db) Load(fn string) error {
@@ -61,6 +59,6 @@ func (db Db) Query(chr string, start int, end int) (<-chan Bed6i, error) {
 	return ch, nil
 }
 
-func (db Db) query(chr string, start int, end int) (<-chan data.NamedRangeI, error) {
+func (db Db) query(chr string, start int, end int) (<-chan NamedRangeI, error) {
 	return db.binindex.QueryRegion(chr, start, end)
 }
