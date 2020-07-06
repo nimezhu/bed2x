@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	VERSION = "0.0.1" //TODO
+	VERSION = "0.0.6" //TODO
 )
 
 func main() {
