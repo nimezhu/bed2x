@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/blang/semver"
 	"github.com/nimezhu/bed2x"
+	"github.com/rhysd/go-github-selfupdate/selfupdate"
 	"github.com/urfave/cli"
 )
 
 const (
-	VERSION = "0.0.1"
+	VERSION = "0.0.1" //TODO
 )
 
 func main() {
@@ -134,6 +136,12 @@ func main() {
 			Action: CmdChromSizes,
 			Flags:  []cli.Flag{},
 		},
+		{
+			Name:   "update",
+			Usage:  "check if new version available in GitHub release and update self if new version is available",
+			Action: UpdateSelf,
+			Flags:  []cli.Flag{},
+		},
 	}
 	app.Run(os.Args)
 }
@@ -141,6 +149,32 @@ func checkErr(err error) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func selfUpdate(slug string) error {
+	selfupdate.EnableLog()
+	previous := semver.MustParse(VERSION)
+	latest, err := selfupdate.UpdateSelf(previous, slug)
+	if err != nil {
+		return err
+	}
+
+	if previous.Equals(latest.Version) {
+		fmt.Println("Current binary is the latest version", VERSION)
+	} else {
+		fmt.Println("Update successfully done to version", latest.Version)
+		fmt.Println("Release note:\n", latest.ReleaseNotes)
+	}
+	return nil
+}
+
+func UpdateSelf(c *cli.Context) error {
+	slug := "nimezhu/bed2x"
+	if err := selfUpdate(slug); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		return err
+	}
+	return nil
 }
 
 /* read bigbed,gzip and text */

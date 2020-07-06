@@ -6,6 +6,7 @@ require (
 	cloud.google.com/go v0.37.4 // indirect
 	github.com/aebruno/twobit v0.0.0-20150407014836-22ac98a779dc
 	github.com/biogo/hts v1.1.0
+	github.com/blang/semver v3.5.1+incompatible
 	github.com/brentp/bix v0.0.0-20190718140914-00aa7a7f205d // indirect
 	github.com/brentp/irelate v0.0.0-20180801151701-1bf7c8f95c75 // indirect
 	github.com/brentp/vcfgo v0.0.0-20190824021612-654ed2e5945d // indirect
@@ -22,6 +23,7 @@ require (
 	github.com/nimezhu/genomedb v0.0.0-20171213193052-ac8125365d5b // indirect
 	github.com/nimezhu/indexed v0.0.0-20190418171824-48f9e720b557
 	github.com/nimezhu/netio v0.0.0-20181023140452-2c1d703652df
+	github.com/rhysd/go-github-selfupdate v1.2.2
 	github.com/tealeg/xlsx v1.0.5 // indirect
 	github.com/urfave/cli v1.22.4
 	google.golang.org/appengine v1.6.6 // indirect
