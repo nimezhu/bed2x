@@ -17,7 +17,7 @@
 go get github.com/nimezhu/bed2x/...
 ```
 ### Download Binaries
-[Download Link](http://genome.compbio.cs.cmu.edu/~xiaopenz/bed2x/current)
+Download pre-compiled files from [release](https://github.com/nimezhu/bed2x/releases).
 
 ## Usage Examples
 ```
