@@ -4,9 +4,6 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/nimezhu/bed2x)](https://goreportcard.com/report/github.com/nimezhu/bed2x)
 [![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat)](https://godoc.org/github.com/nimezhu/bed2x)
 [![Licenses](https://img.shields.io/badge/license-bsd-orange.svg)](https://opensource.org/licenses/BSD-3-Clause)
-[![Linux64](https://img.shields.io/badge/binary-linux-green.svg?style=flat)](http://genome.compbio.cs.cmu.edu/~xiaopenz/bed2x/current/linux/bed2x)
-[![Windows](https://img.shields.io/badge/binary-win-blue.svg?style=flat)](http://genome.compbio.cs.cmu.edu/~xiaopenz/bed2x/current/win64/bed2x.exe)
-[![MacOS](https://img.shields.io/badge/binary-macos-yellow.svg?style=flat)](http://genome.compbio.cs.cmu.edu/~xiaopenz/bed2x/current/mac/bed2x)
 ## Functions
 - get upstream/downstream/intron/exon/promoter/tts/tss/utr3/utr5/cds annotation bed based on input bed12/bed6 bigbed/tabix/gzip/ascii files.
 - fetch cDNA sequence for bed12 format file.
@@ -17,7 +14,7 @@
 go get github.com/nimezhu/bed2x/...
 ```
 ### Download Binaries
-Download pre-compiled files from [release](https://github.com/nimezhu/bed2x/releases).
+Download pre-compiled files for Linux, Windows or Mac OS X from [release](https://github.com/nimezhu/bed2x/releases).
 
 ## Usage Examples
 ```
