@@ -11,7 +11,7 @@
 ## Install
 ### Install from go
 ```
-go get github.com/nimezhu/bed2x/...
+GO111MODULE=on go get github.com/nimezhu/bed2x/...
 ```
 ### Download Binaries
 Download pre-compiled files for Linux, Windows or Mac OS X from [release](https://github.com/nimezhu/bed2x/releases).
