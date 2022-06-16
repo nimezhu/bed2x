@@ -27,4 +27,5 @@ require (
 	github.com/tealeg/xlsx v1.0.5 // indirect
 	github.com/urfave/cli v1.22.4
 	google.golang.org/appengine v1.6.6 // indirect
+    github.com/ulikunitz/xz v0.5.8
 )
